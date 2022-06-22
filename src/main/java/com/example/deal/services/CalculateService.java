@@ -1,6 +1,6 @@
 package com.example.deal.services;
 
-import com.example.deal.controllers.FeignConveyor;
+import com.example.deal.clients.FeignConveyor;
 import com.example.deal.dto.ApplicationStatusHistoryDTO;
 import com.example.deal.dto.CreditDTO;
 import com.example.deal.dto.FinishRegistrationRequestDTO;
