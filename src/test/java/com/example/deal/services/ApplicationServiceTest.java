@@ -74,7 +74,7 @@ class ApplicationServiceTest {
     }
 
     @Test
-    void getResponseListLoanDTOScoringEException() {
+    void getResponseListLoanDTOScoringException() {
 
         ApplicationService applicationService = new ApplicationService(clientRepository, applicationRepository, feignConveyor);
 

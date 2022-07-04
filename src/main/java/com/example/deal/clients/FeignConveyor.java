@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.validation.Valid;
 import java.util.List;
 
-@FeignClient(name = "feignOffers", url = "${custom.deal.deal.clients.url}")
+@FeignClient(name = "feignOffers", url = "${custom.deal.clients.url}")
 public interface FeignConveyor {
 
     @PostMapping(value = "/offers")

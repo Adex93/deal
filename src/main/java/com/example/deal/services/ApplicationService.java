@@ -60,7 +60,6 @@ public class ApplicationService {
             applicationStatusHistoryDTOList.add(new ApplicationStatusHistoryDTO(Status.PREAPPROVAL, LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), null));
             application.setStatusHistory(applicationStatusHistoryDTOList);
             applicationRepository.save(application);
-            clientRepository.save(client);
             log.info("В базе данных сохранена следующая информация: " + application + ", Client: " + client);
             log.info("Список с экземплярами LoanOfferDTO успешно создан: " + list);
             return list;
@@ -70,14 +69,12 @@ public class ApplicationService {
             application.setStatus(Status.CC_DENIED);
             applicationStatusHistoryDTOList.add(new ApplicationStatusHistoryDTO(Status.CC_DENIED, LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), Status.PREAPPROVAL));
             applicationRepository.save(application);
-            clientRepository.save(client);
             throw new ConnectionException("Отсутствует подключение к микросервису Credit Conveyor");
         } catch (FeignException e) {
             log.error("Прескоринг не пройден");
             application.setStatus(Status.CC_DENIED);
             applicationStatusHistoryDTOList.add(new ApplicationStatusHistoryDTO(Status.CC_DENIED, LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), Status.PREAPPROVAL));
             applicationRepository.save(application);
-            clientRepository.save(client);
             throw new ScoringException("Прескоринг не пройден");
         }
     }
