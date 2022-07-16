@@ -33,9 +33,13 @@ public class CalculateService {
     final
     FeignConveyor feignConveyor;
 
-    public CalculateService(ApplicationRepository applicationRepository, FeignConveyor feignConveyor) {
+    final
+    ProducerService producerService;
+
+    public CalculateService(ApplicationRepository applicationRepository, FeignConveyor feignConveyor, ProducerService producerService) {
         this.applicationRepository = applicationRepository;
         this.feignConveyor = feignConveyor;
+        this.producerService = producerService;
     }
 
     public void putFinish(FinishRegistrationRequestDTO finishRegistrationRequestDTO, Long id) {
@@ -93,23 +97,21 @@ public class CalculateService {
             application.setCredit(credit);
             application.setClient(client);
             applicationRepository.save(application);
-
             log.info("В базе данных сохранена следующая информация: Application: " + application + ", Client: " + client + ", Credit: " + credit);
-        }
-        catch (RetryableException e) {
+
+            producerService.sendCreateDocuments(application.getId());
+        } catch (RetryableException e) {
             log.error("Отсутствует подключение к микросервису Credit Conveyor");
             application.setStatus(Status.CC_DENIED);
             application.setStatus(Status.CC_DENIED);
             application.getStatusHistory().add(new ApplicationStatusHistoryDTO(Status.CC_DENIED, LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), Status.APPROVED));
             applicationRepository.save(application);
             throw new ConnectionException("Отсутствует подключение к микросервису Credit Conveyor");
-        }
-        catch (NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             log.error("Заявка с applicationId = " + id + " в базе данных отсутствует");
             throw new BaseDataException("Заявка с applicationId = " + id + " в базе данных отсутствует");
-        }
-        catch (FeignException e) {
-            log.error("Cкорринг не пройден");
+        } catch (FeignException e) {
+            log.error("Cкоринг не пройден");
             application.setStatus(Status.CC_DENIED);
             application.getStatusHistory().add(new ApplicationStatusHistoryDTO(Status.CC_DENIED, LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), Status.APPROVED));
             applicationRepository.save(application);

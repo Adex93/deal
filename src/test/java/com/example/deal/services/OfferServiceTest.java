@@ -25,6 +25,9 @@ import static org.mockito.Mockito.times;
 class OfferServiceTest {
 
     @Mock
+    ProducerService producerService;
+
+    @Mock
     ApplicationRepository applicationRepository;
 
     LoanOfferDTO loanOfferDTO = new LoanOfferDTO();
@@ -42,7 +45,7 @@ class OfferServiceTest {
 
     @Test
     void putOfferShouldUpdateApplication() {
-        OfferService offerService = new OfferService(applicationRepository);
+        OfferService offerService = new OfferService(applicationRepository, producerService);
 
         Application application = new Application();
         application.setStatusHistory(new ArrayList<>());
@@ -59,7 +62,7 @@ class OfferServiceTest {
 
     @Test
     void putOfferBaseDataException() {
-        OfferService offerService = new OfferService(applicationRepository);
+        OfferService offerService = new OfferService(applicationRepository, producerService);
 
         try {
             Mockito.when(applicationRepository.findById(loanOfferDTO.getApplicationId())).thenThrow(NoSuchElementException.class);
