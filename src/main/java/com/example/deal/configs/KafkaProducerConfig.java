@@ -1,4 +1,4 @@
-package com.example.deal.kafkaConfigs;
+package com.example.deal.configs;
 
 import com.example.deal.dto.EmailMessage;
 import org.apache.kafka.clients.producer.ProducerConfig;

@@ -162,8 +162,8 @@ public class ProducerService {
     public void clientDenied(Long id) {
         try {
             Application application = applicationRepository.findById(id).get();
+            application.getStatusHistory().add(new ApplicationStatusHistoryDTO(Status.CLIENT_DENIED, LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), application.getStatus()));
             application.setStatus(Status.CLIENT_DENIED);
-            application.getStatusHistory().add(new ApplicationStatusHistoryDTO(Status.CREDIT_ISSUED, LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), application.getStatus()));
             applicationRepository.save(application);
 
             EmailMessage message = new EmailMessage();
