@@ -38,6 +38,9 @@ import static org.mockito.Mockito.times;
 class CalculateServiceTest {
 
     @Mock
+    ProducerService producerService;
+
+    @Mock
     ApplicationRepository applicationRepository;
 
     @Mock
@@ -63,7 +66,7 @@ class CalculateServiceTest {
 
     @Test
     void putFinishShouldUpdateAllEntity() {
-        CalculateService calculateService = new CalculateService(applicationRepository, feignConveyor);
+        CalculateService calculateService = new CalculateService(applicationRepository, feignConveyor, producerService);
         CreditDTO creditDTO = new CreditDTO();
         Long id = 10L;
 
@@ -94,7 +97,7 @@ class CalculateServiceTest {
 
     @Test
     void putFinishBaseDataException() {
-        CalculateService calculateService = new CalculateService(applicationRepository, feignConveyor);
+        CalculateService calculateService = new CalculateService(applicationRepository, feignConveyor, producerService);
         Long id = 10L;
 
         Credit credit = new Credit();
@@ -117,9 +120,10 @@ class CalculateServiceTest {
             assertEquals(BaseDataException.class, e.getClass());
         }
     }
+
     @Test
     void putFinishScoringException() {
-        CalculateService calculateService = new CalculateService(applicationRepository, feignConveyor);
+        CalculateService calculateService = new CalculateService(applicationRepository, feignConveyor, producerService);
         Long id = 10L;
 
         Credit credit = new Credit();
@@ -139,7 +143,7 @@ class CalculateServiceTest {
             Mockito.when(applicationRepository.findById(id)).thenReturn(Optional.of(application));
             calculateService.putFinish(finishRegistrationRequestDTO, id);
 
-        } catch  (RuntimeException e) {
+        } catch (RuntimeException e) {
             assertEquals(ScoringException.class, e.getClass());
         }
     }
@@ -147,7 +151,7 @@ class CalculateServiceTest {
     @Test
     void putFinishConnectionException() {
 
-        CalculateService calculateService = new CalculateService(applicationRepository, feignConveyor);
+        CalculateService calculateService = new CalculateService(applicationRepository, feignConveyor, producerService);
         Long id = 10L;
 
         Credit credit = new Credit();

@@ -21,8 +21,12 @@ public class OfferService {
     final
     ApplicationRepository applicationRepository;
 
-    public OfferService(ApplicationRepository applicationRepository) {
+    final
+    ProducerService producerService;
+
+    public OfferService(ApplicationRepository applicationRepository, ProducerService producerService) {
         this.applicationRepository = applicationRepository;
+        this.producerService = producerService;
     }
 
     public void putOffer(LoanOfferDTO loanOfferDTO) {
@@ -41,11 +45,15 @@ public class OfferService {
             application.setCredit(credit);
 
             applicationRepository.save(application);
-
             log.info("В базе данных сохранена следующая информация: " + application + ", " + credit);
+
+            producerService.sendFinishRegistration(application.getId());
         } catch (NoSuchElementException e) {
             log.error("Заявка с applicationId = " + loanOfferDTO.getApplicationId() + " в базе данных отсутствует");
             throw new BaseDataException("Заявка с applicationId = " + loanOfferDTO.getApplicationId() + " в базе данных отсутствует");
+
+
+
         }
     }
 
