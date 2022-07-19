@@ -97,6 +97,7 @@ public class MainController {
         return new ResponseEntity<>(producerService.getApplication(applicationId), HttpStatus.OK);
     }
 
+
     @Tag(name = "The deal API")
     @Operation(summary = "Send SES-code")
     @PostMapping("/deal/document/{applicationId}/sign")
