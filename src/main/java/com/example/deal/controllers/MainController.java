@@ -4,10 +4,7 @@ import com.example.deal.dto.FinishRegistrationRequestDTO;
 import com.example.deal.dto.LoanApplicationRequestDTO;
 import com.example.deal.dto.LoanOfferDTO;
 import com.example.deal.entity.Application;
-import com.example.deal.services.ApplicationService;
-import com.example.deal.services.CalculateService;
-import com.example.deal.services.OfferService;
-import com.example.deal.services.ProducerService;
+import com.example.deal.services.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -36,11 +33,15 @@ public class MainController {
     final
     ProducerService producerService;
 
-    public MainController(ApplicationService applicationService, OfferService offerService, CalculateService calculateService, ProducerService producerService) throws RuntimeException {
+    final
+    AdminService adminService;
+
+    public MainController(ApplicationService applicationService, OfferService offerService, CalculateService calculateService, ProducerService producerService, AdminService adminService) throws RuntimeException {
         this.applicationService = applicationService;
         this.offerService = offerService;
         this.calculateService = calculateService;
         this.producerService = producerService;
+        this.adminService = adminService;
     }
 
     @Tag(name = "The deal API")
@@ -92,9 +93,18 @@ public class MainController {
     @Operation(summary = "Get Application by Id")
     @GetMapping("/deal/admin/application/{applicationId}")
     public ResponseEntity<Application> getApplication(@PathVariable(name = "applicationId") Long applicationId) {
-        log.info("Произвёлся вызов /deal/admin/application/{applicationId}/getApplication с applicationId: " + applicationId);
-        log.info("Вызвана функция getApplication класса ProducerService для обновления статуса заявки");
-        return new ResponseEntity<>(producerService.getApplication(applicationId), HttpStatus.OK);
+        log.info("Произвёлся вызов /deal/admin/application/{applicationId} с applicationId: " + applicationId);
+        log.info("Вызвана функция getApplicationById класса AdminService для получения заявки по Id");
+        return new ResponseEntity<>(adminService.getApplicationById(applicationId), HttpStatus.OK);
+    }
+
+    @Tag(name = "The deal API(Admin)")
+    @Operation(summary = "Get all Applications")
+    @GetMapping("/deal/admin/application")
+    public ResponseEntity<List<Application>> getAllApplications() {
+        log.info("Произвёлся вызов /deal/admin/application");
+        log.info("Вызвана функция getAllApplications класса AdminService для получения всех заявок");
+        return new ResponseEntity<>(adminService.getAllApplications(), HttpStatus.OK);
     }
 
 
