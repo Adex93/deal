@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+
+
+    <changeSet id="2" author="Dmitriev Aleksandr">
+        <sqlFile path="db/changelog/v-1.0/sql/sql.create_client.sql"/>
+    </changeSet>
+
+    <changeSet id="3" author="Dmitriev Aleksandr">
+        <sqlFile path="db/changelog/v-1.0/sql/sql.create_credit.sql"/>
+    </changeSet>
+
+    <changeSet id="4" author="Dmitriev Aleksandr">
+        <sqlFile path="db/changelog/v-1.0/sql/sql.create_application.sql"/>
+    </changeSet>
+
+</databaseChangeLog>
