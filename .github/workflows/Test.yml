@@ -17,8 +17,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-      - name: Maven Verify
-        run: mvn -B clean verify
+   
       - name: Test Coverage
         uses: codecov/codecov-action@v1
         with:
