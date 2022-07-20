@@ -17,12 +17,11 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
-@SequenceGenerator(name = "credit_id_seq", initialValue = 1, allocationSize = 1)
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class Credit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "credit_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     BigDecimal amount;

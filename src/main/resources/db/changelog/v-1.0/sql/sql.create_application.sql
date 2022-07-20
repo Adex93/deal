@@ -1,6 +1,6 @@
 CREATE TABLE application
 (
-    id bigint NOT NULL,
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     applied_offer jsonb,
     creation_date date,
     ses_code integer,

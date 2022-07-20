@@ -1,6 +1,6 @@
 CREATE TABLE client
 (
-    id bigint NOT NULL,
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     account character varying(255),
     birth_date date,
     dependent_amount integer,

@@ -1,6 +1,6 @@
 CREATE TABLE credit
 (
-    id bigint NOT NULL,
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     amount numeric(19,2),
     credit_status jsonb,
     is_insurance_enabled boolean,
