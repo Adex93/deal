@@ -1,6 +1,5 @@
 
-name: Running Code Coverage
-
+name: Test
 
 on:
   pull_request:
@@ -19,9 +18,13 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-      - name: Maven Verify
-        run: mvn -B clean verify
+   
       - name: Test Coverage
         uses: codecov/codecov-action@v1
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ secrets.CODECOV_TOKEN }}     
+      - name: Upload coverage reports to Codecov
+        run: |
+         curl -Os https://uploader.codecov.io/latest/linux/codecov
+         chmod +x codecov
+         ./codecov -t ${CODECOV_TOKEN}
