@@ -1,24 +1,33 @@
 
-name: Test
+name: Running Code Coverage
 
-on:
-  pull_request:
-    branches:
-      - '*'
-  push:
-    branches:
-      - 'master'
+on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 13.x, 14.x, 15.x]
+
     steps:
-    - uses: actions/checkout@master
-    - uses: codecov/codecov-action@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
       with:
-         token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-         files: ./coverage1.xml,./coverage2.xml # optional
-         flags: unittests # optional
-         name: codecov-umbrella # optional
-         fail_ci_if_error: true # optional (default = false)
-         verbose: true # optional (default = false)
+        fetch-depth: 2
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm run test
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
