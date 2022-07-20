@@ -1,29 +1,21 @@
-name: Test
+name: API workflow
 
-on:
-  pull_request:
-    branches:
-      - '*'
-  push:
-    branches:
-      - 'master'
+on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+    name: Test python API
     steps:
-      - uses: actions/checkout@v1
-      - name: set up JDK 17
-        uses: actions/setup-java@v1
-        with:
-          java-version: 17
-   
-      - name: Test Coverage
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}     
-      - name: Upload coverage reports to Codecov
-        run: |
-         curl -Os https://uploader.codecov.io/latest/linux/codecov
-         chmod +x codecov
-         ./codecov -t ${CODECOV_TOKEN}
+    - uses: actions/checkout@v1
+    - name: Install requirements
+      run: pip install -r requirements.txt
+    - name: Run tests and collect coverage
+      run: pytest --cov .
+    - name: Upload coverage reports to Codecov
+      run: |
+        # Replace `linux` below with the appropriate OS
+        # Options are `alpine`, `linux`, `macos`, `windows`
+        curl -Os https://uploader.codecov.io/latest/linux/codecov
+        chmod +x codecov
+        ./codecov -t ${CODECOV_TOKEN}
