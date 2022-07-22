@@ -18,12 +18,11 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
-@SequenceGenerator(name = "application_id_seq", initialValue = 1, allocationSize = 1)
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class Application {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "application_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

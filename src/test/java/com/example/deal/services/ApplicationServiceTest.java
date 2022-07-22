@@ -70,7 +70,6 @@ class ApplicationServiceTest {
         assertEquals(4, resultTest.size());
         Mockito.verify(feignConveyor, times(1)).addNewOffer(Mockito.any());
         Mockito.verify(applicationRepository, times(2)).save(Mockito.any());
-        Mockito.verify(clientRepository, times(1)).save(Mockito.any());
     }
 
     @Test
